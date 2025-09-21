@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -22,3 +23,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+=======
+node_modules/
+dist/
+.vite/
+
+# editors
+.vscode/
+.DS_Store
+
+# env
+.env
+>>>>>>> 58bd9be (chore: stop tracking node_modules/caches; add .gitignore)
