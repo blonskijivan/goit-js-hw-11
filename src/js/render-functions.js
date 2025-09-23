@@ -2,7 +2,7 @@ import SimpleLightbox from 'simplelightbox/dist/simple-lightbox.esm.js';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
-const loader = document.querySelector('.loader');
+const loader  = document.querySelector('.loader');
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captions: true,
@@ -11,22 +11,19 @@ const lightbox = new SimpleLightbox('.gallery a', {
 });
 
 export function createGallery(images = []) {
-  const markup = images
-    .map(
-      ({ largeImageURL, webformatURL, tags, likes, views, comments, downloads }) => `
-      <li class="gallery-item">
-        <a href="${largeImageURL}">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-        </a>
-        <ul class="stats">
-          <li>Likes: <b>${likes}</b></li>
-          <li>Views: <b>${views}</b></li>
-          <li>Comments: <b>${comments}</b></li>
-          <li>Downloads: <b>${downloads}</b></li>
-        </ul>
-      </li>`
-    )
-    .join('');
+  const markup = images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
+    <li class="card">
+      <a href="${largeImageURL}">
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      </a>
+      <ul class="meta">
+        <li><b>Likes:</b> ${likes}</li>
+        <li><b>Views:</b> ${views}</li>
+        <li><b>Comments:</b> ${comments}</li>
+        <li><b>Downloads:</b> ${downloads}</li>
+      </ul>
+    </li>
+  `).join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
@@ -37,11 +34,8 @@ export function clearGallery() {
 }
 
 export function showLoader() {
-  loader?.classList.add('loader-default');
-  loader.style.display = 'block';
+  loader?.classList.remove('is-hidden');
 }
-
 export function hideLoader() {
-  loader?.classList.remove('loader-default');
-  loader.style.display = 'none';
+  loader?.classList.add('is-hidden');
 }
