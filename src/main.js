@@ -4,3 +4,27 @@ import './css/loader.css';
 
 import { getImagesByQuery } from './js/pixabay-api.js';
 import { createGallery, clearGallery, showLoader, hideLoader } from './js/render-functions.js';
+
+const form = document.querySelector('#search-form');
+const input = document.querySelector('#query');
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const query = input.value.trim();
+  if (!query) return;
+
+  clearGallery();
+  showLoader();
+
+  try {
+    const data = await getImagesByQuery(query);
+    createGallery(data.hits ?? []);
+  } catch (err) {
+    iziToast.info({ message: 'Error or empty result' });
+  } finally {
+    hideLoader();
+  }
+});
+
+window.addEventListener('DOMContentLoaded', hideLoader);
