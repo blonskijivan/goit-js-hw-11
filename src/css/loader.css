@@ -3,6 +3,7 @@
 @import url('./loader.css');
 
 .loader {
+    display: block;
     width: 48px;
     height: 48px;
     border: 4px solid #ddd;
