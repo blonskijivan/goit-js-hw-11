@@ -1,31 +1,30 @@
 import axios from 'axios';
 
-const API_KEY = '...';
-const BASE = 'https://pixabay.com/api/';
+const API_KEY = '52485365-5c5aa9c7e22c008bb072ec6c7';
+const BASE_URL = 'https://pixabay.com/api/';
 
-function withTimeout(ms = 10000) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), ms);
-  return { signal: ctrl.signal, clear: () => clearTimeout(t) };
-}
-
-export async function getImagesByQuery(query) {
-  const { signal, clear } = withTimeout(10000); // 10s
-
-  const params = new URLSearchParams({
+const api = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+  params: {
     key: API_KEY,
-    q: query,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: 'true',
     per_page: 40,
-  });
+  },
+});
 
-  try {
-    const res = await fetch(`${BASE}?${params}`, { signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
-  } finally {
-    clear();
-  }
+/**
+ * Отримати зображення за запитом
+ * @param {string} query
+ * @param {AbortSignal} [signal]
+ * @returns {Promise<{hits: any[], total: number, totalHits: number}>}
+ */
+export async function getImagesByQuery(query, signal) {
+  const q = (query ?? '').trim();
+  if (!q) return { hits: [], total: 0, totalHits: 0 };
+
+  const { data } = await api.get('', { params: { q }, signal });
+  return data; // { hits, total, totalHits }
 }

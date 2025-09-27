@@ -1,4 +1,6 @@
+import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+
 import './css/styles.css';
 import './css/loader.css';
 
@@ -17,12 +19,22 @@ form.addEventListener('submit', async e => {
   clearGallery();
   showLoader();
 
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 15000); // safety timeout
+
   try {
-    const data = await getImagesByQuery(query);
-    createGallery(data.hits ?? []);
+    const data = await getImagesByQuery(query, ctrl.signal);
+
+    if (!data.hits?.length) {
+      iziToast.info({ message: 'Sorry, there are no images matching your search query. Please try again!' });
+      return;
+    }
+
+    createGallery(data.hits);
   } catch (err) {
-    iziToast.info({ message: 'Error or empty result' });
+    iziToast.error({ message: err?.message || 'Request failed' });
   } finally {
+    clearTimeout(t);
     hideLoader();
   }
 });
