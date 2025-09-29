@@ -2,7 +2,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
-const loader  = document.querySelector('.loader');
+const loader = document.querySelector('.loader');
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captions: true,
@@ -12,10 +12,11 @@ const lightbox = new SimpleLightbox('.gallery a', {
 
 export function createGallery(images = []) {
   const markup = images
-    .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
+    .map(
+      ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
       <li class="card">
         <a href="${largeImageURL}">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
+          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
         </a>
         <ul class="meta">
           <li><b>Likes:</b> ${likes}</li>
@@ -23,8 +24,8 @@ export function createGallery(images = []) {
           <li><b>Comments:</b> ${comments}</li>
           <li><b>Downloads:</b> ${downloads}</li>
         </ul>
-      </li>
-    `)
+      </li>`
+    )
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markup);
