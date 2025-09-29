@@ -16,7 +16,6 @@ const api = axios.create({
 });
 
 /**
- * Отримати зображення за запитом
  * @param {string} query
  * @param {AbortSignal} [signal]
  * @returns {Promise<{hits: any[], total: number, totalHits: number}>}
@@ -26,5 +25,5 @@ export async function getImagesByQuery(query, signal) {
   if (!q) return { hits: [], total: 0, totalHits: 0 };
 
   const { data } = await api.get('', { params: { q }, signal });
-  return data; // { hits, total, totalHits }
+  return data;
 }

@@ -20,13 +20,19 @@ form.addEventListener('submit', async e => {
   showLoader();
 
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 15000); // safety timeout
+  const t = setTimeout(() => ctrl.abort(), 15000);
 
   try {
     const data = await getImagesByQuery(query, ctrl.signal);
 
     if (!data.hits?.length) {
-      iziToast.info({ message: 'Sorry, there are no images matching your search query. Please try again!' });
+      iziToast.error({
+        message: 'Sorry, there are no images matching your search query. Please try again!',
+        position: 'topRight',
+        timeout: 4000,
+        progressBar: true,
+        close: true,
+      });
       return;
     }
 
